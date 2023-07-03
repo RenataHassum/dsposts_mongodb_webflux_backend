@@ -49,11 +49,6 @@ public class UserService {
                 .flatMap(existingUser -> repository.delete(existingUser));
     }
 
-//    public List<PostDTO> getUserPosts(String id) {
-//        User user = getEntityById(id);
-//        return user.getPosts().stream().map(PostDTO::new).collect(Collectors.toList());
-//    }
-
     private void copyDtoToEntity(UserDTO dto, User entity) {
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());

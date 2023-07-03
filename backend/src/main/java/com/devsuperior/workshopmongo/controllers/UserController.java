@@ -45,9 +45,4 @@ public class UserController {
         return service.delete(id).then(Mono.just(ResponseEntity.noContent().<Void>build()));
     }
 
-//    @GetMapping(value="/{id}/posts")
-//    public ResponseEntity<List<PostDTO>> getUserPosts(@PathVariable String id) {
-//        List<PostDTO> list = service.getUserPosts(id);
-//        return ResponseEntity.ok().body(list);
-//    }
 }
