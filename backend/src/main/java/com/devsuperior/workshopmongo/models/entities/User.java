@@ -1,9 +1,11 @@
 package com.devsuperior.workshopmongo.models.entities;
 
+import java.util.Objects;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "users")
+@Document(collection = "user")
 public class User {
 
     @Id
@@ -15,6 +17,7 @@ public class User {
     }
 
     public User(String id, String name, String email) {
+        super();
         this.id = id;
         this.name = name;
         this.email = email;
@@ -42,5 +45,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, id, name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(name, other.name);
     }
 }

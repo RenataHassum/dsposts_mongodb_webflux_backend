@@ -1,26 +1,20 @@
-package com.devsuperior.workshopmongo.models.embedded;
+package com.devsuperior.workshopmongo.models.dto;
 
 import java.time.Instant;
 
-public class Comment {
+public class CommentDTO {
 
     private String text;
     private Instant date;
-    private Author author;
+    private AuthorDTO author;
 
-    public Comment() {
+    public CommentDTO() {
     }
 
-    public Comment(String text, Instant date, Author author) {
+    public CommentDTO(String text, Instant date, AuthorDTO author) {
         this.text = text;
         this.date = date;
         this.author = author;
-    }
-
-    public Comment(String text, Instant date, String authorId, String authorName) {
-        this.text = text;
-        this.date = date;
-        this.author = new Author(authorId, authorName);
     }
 
     public String getText() {
@@ -39,11 +33,11 @@ public class Comment {
         this.date = date;
     }
 
-    public Author getAuthor() {
+    public AuthorDTO getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public void setAuthor(AuthorDTO author) {
         this.author = author;
     }
 }

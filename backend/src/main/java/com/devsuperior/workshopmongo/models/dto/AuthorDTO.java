@@ -1,23 +1,16 @@
-package com.devsuperior.workshopmongo.models.embedded;
+package com.devsuperior.workshopmongo.models.dto;
 
-import com.devsuperior.workshopmongo.models.entities.User;
-
-public class Author {
+public class AuthorDTO {
 
     private String id;
     private String name;
 
-    public Author() {
+    public AuthorDTO() {
     }
 
-    public Author(String id, String name) {
+    public AuthorDTO(String id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    public Author(User entity) {
-        id = entity.getId();
-        name = entity.getName();
     }
 
     public String getId() {
