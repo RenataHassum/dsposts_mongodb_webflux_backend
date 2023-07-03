@@ -1,7 +1,7 @@
 package com.devsuperior.workshopmongo.controllers;
 
+import com.devsuperior.workshopmongo.controllers.util.URL;
 import com.devsuperior.workshopmongo.models.dto.PostDTO;
-import com.devsuperior.workshopmongo.models.dto.UserDTO;
 import com.devsuperior.workshopmongo.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.text.ParseException;
+import java.time.Instant;
 
 @RestController
 @RequestMapping(value = "/posts")
@@ -26,18 +27,18 @@ public class PostController {
 
     @GetMapping(value = "/titlesearch")
     public Flux<PostDTO> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) throws UnsupportedEncodingException {
-       return service.findByTitle(text);
+        return service.findByTitle(text);
+    }
+
+    @GetMapping(value = "/fullsearch")
+    public Flux<PostDTO> fullSearch(@RequestParam(value = "text", defaultValue = "") String text,
+                                    @RequestParam(value = "minDate", defaultValue = "") String minDate,
+                                    @RequestParam(value = "maxDate", defaultValue = "") String maxDate)
+            throws UnsupportedEncodingException, ParseException {
+
+        text = URL.decodeParam(text);
+        Instant min = URL.convertDate(minDate, Instant.EPOCH);
+        Instant max = URL.convertDate(maxDate, Instant.now());
+        return service.fullSearch(text, min, max);
     }
 }
-
-
-
-//    @GetMapping(value = "/fullsearch")
-//    public ResponseEntity<List<PostDTO>> fullSearch(
-//            @RequestParam(value = "text", defaultValue = "") String text,
-//            @RequestParam(value = "start", defaultValue = "") String start,
-//            @RequestParam(value = "end", defaultValue = "") String end) {
-//        List<PostDTO> list = service.fullSearch(text, start, end);
-//        return ResponseEntity.ok().body(list);
-//    }
-//}
