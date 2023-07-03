@@ -6,8 +6,10 @@ import com.devsuperior.workshopmongo.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -21,15 +23,15 @@ public class PostController {
     public Mono<ResponseEntity<PostDTO>> findById(@PathVariable String id) {
         return service.findById(id).map(postDTO -> ResponseEntity.ok(postDTO));
     }
+
+    @GetMapping(value = "/titlesearch")
+    public Flux<PostDTO> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) throws UnsupportedEncodingException {
+       return service.findByTitle(text);
+    }
 }
 
-//
-//    @GetMapping(value = "/titlesearch")
-//    public ResponseEntity<List<PostDTO>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
-//        List<PostDTO> list = service.findByTitle(text);
-//        return ResponseEntity.ok().body(list);
-//    }
-//
+
+
 //    @GetMapping(value = "/fullsearch")
 //    public ResponseEntity<List<PostDTO>> fullSearch(
 //            @RequestParam(value = "text", defaultValue = "") String text,
