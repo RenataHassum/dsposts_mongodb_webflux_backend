@@ -37,12 +37,11 @@ public class UserController {
                        .toUri()).body(newUser));
     }
 
-//    @PutMapping(value="/{id}")
-//    public ResponseEntity<UserDTO> update(@PathVariable String id, @RequestBody UserDTO obj) {
-//        obj = service.update(id, obj);
-//        return ResponseEntity.ok().body(obj);
-//    }
-//
+    @PutMapping(value="/{id}")
+    public Mono<ResponseEntity<UserDTO>> update(@PathVariable String id, @RequestBody UserDTO dto) {
+        return service.update(id, dto).map(userUpdated -> ResponseEntity.ok(userUpdated));
+    }
+
 //    @DeleteMapping(value="/{id}")
 //    public ResponseEntity<Void> delete(@PathVariable String id) {
 //        service.delete(id);

@@ -32,13 +32,17 @@ public class UserService {
         return result;
     }
 
-//    public UserDTO update(String id, UserDTO dto) {
-//        User entity = getEntityById(id);
-//        copyDtoToEntity(dto, entity);
-//        entity = repository.save(entity);
-//        return new UserDTO(entity);
-//    }
-//
+    public Mono<UserDTO> update(String id, UserDTO dto) {
+        return repository.findById(id)
+                .flatMap(existingUser -> {
+                    existingUser.setName(dto.getName());
+                    existingUser.setEmail(dto.getEmail());
+                    return repository.save(existingUser);
+                })
+                .map(user -> new UserDTO(user))
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Recurso não encontrado")));
+    }
+
 //    public void delete(String id) {
 //        getEntityById(id);
 //        repository.deleteById(id);
@@ -47,11 +51,6 @@ public class UserService {
 //    public List<PostDTO> getUserPosts(String id) {
 //        User user = getEntityById(id);
 //        return user.getPosts().stream().map(PostDTO::new).collect(Collectors.toList());
-//    }
-//
-//    private User getEntityById(String id) {
-//        Optional<User> result = repository.findById(id);
-//        return result.orElseThrow(() -> new ResourceNotFoundException("Objeto não encontrado"));
 //    }
 
     private void copyDtoToEntity(UserDTO dto, User entity) {
