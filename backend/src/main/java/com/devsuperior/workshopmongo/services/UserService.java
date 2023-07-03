@@ -43,11 +43,12 @@ public class UserService {
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Recurso não encontrado")));
     }
 
-//    public void delete(String id) {
-//        getEntityById(id);
-//        repository.deleteById(id);
-//    }
-//
+    public Mono<Void> delete(String id) {
+        return repository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Recurso não encontrado")))
+                .flatMap(existingUser -> repository.delete(existingUser));
+    }
+
 //    public List<PostDTO> getUserPosts(String id) {
 //        User user = getEntityById(id);
 //        return user.getPosts().stream().map(PostDTO::new).collect(Collectors.toList());

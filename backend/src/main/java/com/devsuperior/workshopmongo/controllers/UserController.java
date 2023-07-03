@@ -9,8 +9,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
@@ -30,24 +28,23 @@ public class UserController {
 
     @PostMapping
     public Mono<ResponseEntity<UserDTO>> insert(@RequestBody UserDTO dto, UriComponentsBuilder builder) {
-       return service.insert(dto)
-               .map(newUser -> ResponseEntity
-                       .created(builder.path("/users/{id}")
-                       .buildAndExpand(newUser.getId())
-                       .toUri()).body(newUser));
+        return service.insert(dto)
+                .map(newUser -> ResponseEntity
+                        .created(builder.path("/users/{id}")
+                                .buildAndExpand(newUser.getId())
+                                .toUri()).body(newUser));
     }
 
-    @PutMapping(value="/{id}")
+    @PutMapping(value = "/{id}")
     public Mono<ResponseEntity<UserDTO>> update(@PathVariable String id, @RequestBody UserDTO dto) {
         return service.update(id, dto).map(userUpdated -> ResponseEntity.ok(userUpdated));
     }
 
-//    @DeleteMapping(value="/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable String id) {
-//        service.delete(id);
-//        return ResponseEntity.noContent().build();
-//    }
-//
+    @DeleteMapping(value = "/{id}")
+    public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
+        return service.delete(id).then(Mono.just(ResponseEntity.noContent().<Void>build()));
+    }
+
 //    @GetMapping(value="/{id}/posts")
 //    public ResponseEntity<List<PostDTO>> getUserPosts(@PathVariable String id) {
 //        List<PostDTO> list = service.getUserPosts(id);
